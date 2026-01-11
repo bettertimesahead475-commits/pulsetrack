@@ -2,3 +2,784 @@ pulsetrack/
 ├─ index.html
 ├─ README.md
 └─ netlify.toml
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PulseTrack — Junk Removal Lead & Tracking System</title>
+  <meta name="description" content="PulseTrack builds and runs a customer engine for junk removal companies: lead capture, tracking, routing, and optimization." />
+
+  <!-- CEO / Brand Meta -->
+  <meta name="author" content="Chris Pelkie" />
+  <meta name="application-name" content="PulseTrack" />
+  <meta name="theme-color" content="#0b1020" />
+
+  <!-- Open Graph (Facebook/LinkedIn/iMessage) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="PulseTrack" />
+  <meta property="og:title" content="PulseTrack — Junk Removal Leads + Tracking" />
+  <meta property="og:description" content="We help junk removal companies get more booked jobs with tracking, lead capture, and optimization." />
+  <!-- Replace these when you have a real domain + image -->
+  <meta property="og:url" content="https://pulsetrack.example/" />
+  <meta property="og:image" content="https://pulsetrack.example/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter/X -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="PulseTrack — Junk Removal Leads + Tracking" />
+  <meta name="twitter:description" content="More booked jobs. Clear tracking. Simple system." />
+  <meta name="twitter:image" content="https://pulsetrack.example/og-image.png" />
+
+  <!-- Organization Schema (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Organization",
+    "name":"PulseTrack",
+    "url":"https://pulsetrack.example/",
+    "logo":"https://pulsetrack.example/logo.png",
+    "founder":{
+      "@type":"Person",
+      "name":"Chris Pelkie",
+      "jobTitle":"CEO"
+    },
+    "sameAs":[
+      "https://www.facebook.com/",
+      "https://www.instagram.com/",
+      "https://www.tiktok.com/"
+    ]
+  }
+  </script>
+
+  <style>
+    :root{
+      --bg:#0b1020; --panel:#101a33; --panel2:#0f1730; --text:#e8eefc; --muted:#a9b7dd;
+      --brand:#6aa6ff; --brand2:#7cf0d6; --danger:#ff6a8a; --line:#223059;
+      --shadow: 0 10px 35px rgba(0,0,0,.35);
+      --radius: 18px;
+      --max: 1120px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background: radial-gradient(900px 500px at 20% 0%, rgba(106,166,255,.25), transparent 55%),
+                  radial-gradient(900px 500px at 80% 10%, rgba(124,240,214,.18), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+    }
+    a{color:inherit}
+    .wrap{max-width:var(--max); margin:0 auto; padding:22px}
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(10px);
+      background: rgba(11,16,32,.72);
+      border-bottom: 1px solid rgba(34,48,89,.6);
+    }
+    .nav{display:flex; align-items:center; justify-content:space-between; gap:14px}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:900; letter-spacing:.3px}
+    .logo{
+      width:36px; height:36px; border-radius:12px;
+      background: linear-gradient(135deg, var(--brand), var(--brand2));
+      box-shadow: var(--shadow);
+    }
+    .links{display:flex; gap:14px; align-items:center; flex-wrap:wrap}
+    .links a{opacity:.9; text-decoration:none; font-weight:700; font-size:14px}
+    .links a:hover{opacity:1; text-decoration:underline}
+
+    .btn{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      padding:10px 14px; border-radius:999px;
+      font-weight:900; cursor:pointer;
+      display:inline-flex; align-items:center; gap:9px;
+    }
+    .btn:hover{background: rgba(255,255,255,.09)}
+    .btn.primary{
+      border-color: rgba(106,166,255,.55);
+      background: linear-gradient(135deg, rgba(106,166,255,.25), rgba(124,240,214,.18));
+    }
+
+    .pill{
+      display:inline-flex; gap:8px; align-items:center;
+      padding:8px 12px; border-radius:999px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      color: var(--muted);
+      font-weight:900; font-size:13px;
+    }
+
+    .hero{
+      padding:40px 0 10px;
+      display:grid; grid-template-columns: 1.2fr .8fr; gap:24px;
+      align-items:stretch;
+    }
+    @media (max-width: 980px){ .hero{grid-template-columns:1fr; padding-top:26px} }
+
+    h1{
+      font-size: clamp(34px, 4vw, 52px);
+      line-height:1.05; margin:14px 0 12px;
+      letter-spacing: -0.02em;
+    }
+    .sub{color:var(--muted); font-size:16px; line-height:1.55; margin:0 0 18px}
+    .heroActions{display:flex; gap:12px; flex-wrap:wrap; margin:16px 0 10px}
+
+    .card{
+      background: linear-gradient(180deg, rgba(16,26,51,.9), rgba(15,23,48,.9));
+      border:1px solid rgba(34,48,89,.75);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:18px;
+    }
+
+    .grid3{display:grid; grid-template-columns: repeat(3, 1fr); gap:12px}
+    @media (max-width: 980px){ .grid3{grid-template-columns:1fr} }
+
+    .li{
+      display:flex; gap:10px; align-items:flex-start;
+      padding:12px; border-radius:14px;
+      border:1px solid rgba(34,48,89,.75);
+      background: rgba(255,255,255,.04);
+    }
+    .check{
+      width:18px; height:18px; border-radius:6px;
+      background: rgba(124,240,214,.18);
+      border:1px solid rgba(124,240,214,.35);
+      display:inline-flex; align-items:center; justify-content:center;
+      flex:none; margin-top:2px;
+    }
+    .check:before{content:"✓"; font-weight:900; color: var(--brand2); font-size:12px}
+
+    .section{padding:26px 0}
+    .section h2{margin:0 0 10px; font-size:26px}
+    .section p{margin:0 0 18px; color:var(--muted); line-height:1.6}
+
+    .twoCol{display:grid; grid-template-columns: 1fr 1fr; gap:14px}
+    @media (max-width: 980px){ .twoCol{grid-template-columns:1fr} }
+
+    .list{display:grid; gap:10px; margin:0; padding:0; list-style:none;}
+    .panelTitle{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px}
+    .panelTitle h3{margin:0; font-size:18px}
+
+    .muted{color:var(--muted)}
+    .tag{
+      display:inline-flex; padding:6px 10px; border-radius:999px;
+      background: rgba(106,166,255,.16);
+      border:1px solid rgba(106,166,255,.35);
+      font-weight:900; font-size:12px;
+    }
+    .divider{height:1px; background: rgba(34,48,89,.8); margin:14px 0}
+    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+
+    .badge{
+      display:inline-flex; gap:8px; align-items:center;
+      padding:8px 10px; border-radius:14px;
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(34,48,89,.75);
+      font-size:12px; font-weight:900; color: var(--muted);
+    }
+    .badge b{color:var(--text)}
+
+    .pricing{display:grid; grid-template-columns: repeat(3, 1fr); gap:12px}
+    @media (max-width: 980px){ .pricing{grid-template-columns:1fr} }
+
+    .price{font-size:34px; font-weight:950; margin:10px 0 6px; letter-spacing:-.02em}
+    .mini{font-size:12px; color:var(--muted)}
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace}
+
+    input, select, textarea{
+      width:100%;
+      padding:12px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(34,48,89,.9);
+      background: rgba(0,0,0,.22);
+      color: var(--text);
+      outline:none;
+    }
+    input::placeholder, textarea::placeholder{color: rgba(169,183,221,.65)}
+
+    /* Toggle */
+    .toggle{
+      display:flex; align-items:center; gap:8px;
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(34,48,89,.75);
+      padding:6px; border-radius:999px;
+    }
+    .toggle button{
+      border:none; cursor:pointer; font-weight:950;
+      background: transparent; color: var(--muted);
+      padding:8px 10px; border-radius:999px;
+    }
+    .toggle button.active{
+      color: var(--text);
+      background: rgba(106,166,255,.16);
+      border:1px solid rgba(106,166,255,.35);
+    }
+
+    /* Modals */
+    .overlay{
+      position:fixed; inset:0; background: rgba(0,0,0,.55);
+      display:none; align-items:center; justify-content:center; z-index:9999;
+      padding:16px;
+    }
+    .modal{
+      width:min(760px, 100%);
+      background: linear-gradient(180deg, rgba(16,26,51,.98), rgba(15,23,48,.98));
+      border:1px solid rgba(34,48,89,.9);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding:16px;
+    }
+    .modalHeader{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px}
+    .modalHeader h3{margin:0; font-size:18px}
+    .close{background:transparent; border:none; color:var(--text); cursor:pointer; font-size:20px}
+
+    .toast{
+      position:fixed; right:16px; bottom:16px; z-index:9999;
+      background: rgba(16,26,51,.95);
+      border:1px solid rgba(34,48,89,.85);
+      box-shadow: var(--shadow);
+      border-radius: 16px;
+      padding:12px 14px;
+      color: var(--text);
+      display:none;
+      max-width: 420px;
+    }
+
+    .footer{padding:28px 0 36px; color: var(--muted); font-size:13px}
+    .tinyLinks{display:flex; gap:12px; flex-wrap:wrap; margin-top:10px}
+    .tinyLinks a{color:var(--muted); text-decoration:none}
+    .tinyLinks a:hover{text-decoration:underline; color:var(--text)}
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    <div class="wrap nav">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <div style="font-size:14px; opacity:.95">PulseTrack</div>
+          <div style="font-size:12px; color:var(--muted); margin-top:-2px">Junk Removal Leads + Tracking</div>
+        </div>
+      </div>
+
+      <div class="links">
+        <a href="#how">How it works</a>
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#proof">Proof</a>
+        <button class="btn" id="shareBtn" type="button">🔗 Share</button>
+        <button class="btn primary" id="demoBtnTop" type="button">Request a Demo</button>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="card">
+        <span class="pill">⚡ More booked jobs • Lead tracking • Simple system</span>
+        <h1>Get more junk removal jobs — and prove where every lead comes from.</h1>
+        <p class="sub">
+          PulseTrack builds and runs your customer engine: landing page + lead capture + tracking + follow-up.
+          You don’t need “software.” You need the phone ringing and jobs booked.
+        </p>
+
+        <div class="heroActions">
+          <button class="btn primary" type="button" id="demoBtnHero">Request a Demo</button>
+          <button class="btn" type="button" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">View Pricing</button>
+          <span class="badge">✅ <b>Built for local businesses</b> • Simple • Fast setup</span>
+        </div>
+
+        <div class="grid3" style="margin-top:14px">
+          <div class="li">
+            <div class="check" aria-hidden="true"></div>
+            <div><b>Lead Capture</b><div class="mini">Forms and calls captured cleanly.</div></div>
+          </div>
+          <div class="li">
+            <div class="check" aria-hidden="true"></div>
+            <div><b>Tracking</b><div class="mini">Know what channel produced the lead.</div></div>
+          </div>
+          <div class="li">
+            <div class="check" aria-hidden="true"></div>
+            <div><b>Optimization</b><div class="mini">Improve what works, cut what doesn’t.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="panelTitle">
+          <h3>What you’ll see in the demo</h3>
+          <span class="tag">20 minutes</span>
+        </div>
+        <ul class="list">
+          <li class="li"><div class="check"></div><div><b>Lead intake</b><div class="mini">How customers submit jobs fast on mobile.</div></div></li>
+          <li class="li"><div class="check"></div><div><b>Lead delivery</b><div class="mini">How leads arrive instantly (email/SMS/CRM).</div></div></li>
+          <li class="li"><div class="check"></div><div><b>Tracking</b><div class="mini">How we attribute leads to a source.</div></div></li>
+          <li class="li"><div class="check"></div><div><b>Plan & pricing</b><div class="mini">A simple offer that makes sense for junk removal.</div></div></li>
+        </ul>
+        <div class="divider"></div>
+        <div class="row">
+          <span class="badge">CEO: <b>Chris Pelkie</b></span>
+          <span class="badge">Setup: <b>Fast</b></span>
+          <span class="badge">Goal: <b>Booked jobs</b></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="section" id="how">
+      <h2>How it works</h2>
+      <p>This is not “complex software.” It’s a simple, reliable system that gets you more jobs.</p>
+
+      <div class="pricing">
+        <div class="card">
+          <div class="panelTitle"><h3>1) Build the intake</h3><span class="tag">Fast</span></div>
+          <p class="muted" style="margin:0; line-height:1.7">
+            We set up a clean landing page and job form (or call capture) that converts on mobile.
+          </p>
+        </div>
+        <div class="card">
+          <div class="panelTitle"><h3>2) Track & deliver</h3><span class="tag">Clean</span></div>
+          <p class="muted" style="margin:0; line-height:1.7">
+            Leads get delivered instantly and logged so you can see what source is performing.
+          </p>
+        </div>
+        <div class="card">
+          <div class="panelTitle"><h3>3) Optimize weekly</h3><span class="tag">Results</span></div>
+          <p class="muted" style="margin:0; line-height:1.7">
+            We double down on what brings booked jobs and cut what wastes time.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="section" id="features">
+      <h2>Features</h2>
+      <p>Everything you need to capture leads, respond fast, and track what’s paying you.</p>
+
+      <div class="twoCol">
+        <div class="card">
+          <div class="panelTitle"><h3>Lead Capture</h3><span class="tag">Core</span></div>
+          <ul class="list">
+            <li class="li"><div class="check"></div><div><b>Mobile-first form</b><div class="mini">Quick details, easy submission.</div></div></li>
+            <li class="li"><div class="check"></div><div><b>Spam protection</b><div class="mini">Reduce junk leads and bots.</div></div></li>
+            <li class="li"><div class="check"></div><div><b>Instant notifications</b><div class="mini">Email capture now; SMS/CRM later.</div></div></li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="panelTitle"><h3>Tracking & Reporting</h3><span class="tag">Proof</span></div>
+          <ul class="list">
+            <li class="li"><div class="check"></div><div><b>Source tracking</b><div class="mini">Know where leads came from.</div></div></li>
+            <li class="li"><div class="check"></div><div><b>Lead log</b><div class="mini">Every request saved for review.</div></div></li>
+            <li class="li"><div class="check"></div><div><b>Optimization</b><div class="mini">Tune messaging and targeting weekly.</div></div></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <div class="panelTitle">
+          <h3>Perfect for</h3>
+          <span class="tag">Local operators</span>
+        </div>
+        <div class="row">
+          <span class="badge">Furniture removal</span>
+          <span class="badge">Appliance hauling</span>
+          <span class="badge">Garage cleanouts</span>
+          <span class="badge">Estate cleanouts</span>
+          <span class="badge">Construction debris</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="section" id="pricing">
+      <div class="row" style="justify-content:space-between; align-items:flex-end">
+        <div>
+          <h2 style="margin:0 0 10px">Pricing</h2>
+          <p style="margin:0 0 18px">Simple packages for junk removal. Annual saves you 2 months.</p>
+        </div>
+        <div class="toggle" role="tablist" aria-label="billing toggle">
+          <button type="button" class="active" id="monthlyBtn">Monthly</button>
+          <button type="button" id="annualBtn">Annual <span class="mini" style="margin-left:6px">(-2 months)</span></button>
+        </div>
+      </div>
+
+      <div class="pricing">
+        <div class="card">
+          <div class="panelTitle"><h3>Starter</h3><span class="tag">Basic</span></div>
+          <div class="price" id="priceStarter">$499<span class="mini">/mo</span></div>
+          <div class="mini">Landing page + lead form + basic tracking</div>
+          <div class="divider"></div>
+          <ul class="list">
+            <li class="li"><div class="check"></div><div><b>One location</b><div class="mini">Local coverage</div></div></li>
+            <li class="li"><div class="check"></div><div><b>Lead inbox</b><div class="mini">All leads in one place</div></div></li>
+            <li class="li"><div class="check"></div><div><b>Monthly tune-up</b><div class="mini">Keep improving</div></div></li>
+          </ul>
+          <div class="divider"></div>
+          <button class="btn primary" type="button" data-plan="Starter">Request Demo</button>
+        </div>
+
+        <div class="card" style="border-color: rgba(124,240,214,.35)">
+          <div class="panelTitle"><h3>Growth</h3><span class="tag">Most Popular</span></div>
+          <div class="price" id="priceGrowth">$999<span class="mini">/mo</span></div>
+          <div class="mini">Tracking + optimization + faster iteration</div>
+          <div class="divider"></div>
+          <ul class="list">
+            <li class="li"><div class="check"></div><div><b>Better tracking</b><div class="mini">More clarity on source performance</div></div></li>
+            <li class="li"><div class="check"></div><div><b>Bi-weekly optimization</b><div class="mini">Faster improvements</div></div></li>
+            <li class="li"><div class="check"></div><div><b>Priority support</b><div class="mini">Faster response</div></div></li>
+          </ul>
+          <div class="divider"></div>
+          <button class="btn primary" type="button" data-plan="Growth">Request Demo</button>
+        </div>
+
+        <div class="card">
+          <div class="panelTitle"><h3>Scale</h3><span class="tag">Teams</span></div>
+          <div class="price" id="priceScale">$1,499<span class="mini">/mo</span></div>
+          <div class="mini">Multi-location + heavier optimization</div>
+          <div class="divider"></div>
+          <ul class="list">
+            <li class="li"><div class="check"></div><div><b>Multi-location</b><div class="mini">Run multiple service areas</div></div></li>
+            <li class="li"><div class="check"></div><div><b>Weekly optimization</b><div class="mini">Aggressive improvements</div></div></li>
+            <li class="li"><div class="check"></div><div><b>Operations support</b><div class="mini">Process + tracking help</div></div></li>
+          </ul>
+          <div class="divider"></div>
+          <button class="btn primary" type="button" data-plan="Scale">Request Demo</button>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <div class="panelTitle">
+          <h3>Enterprise</h3>
+          <span class="tag">Custom</span>
+        </div>
+        <p class="mini" style="margin:0 0 10px">
+          Custom plans for large operators, marketplaces, or advanced integrations.
+        </p>
+        <div class="row">
+          <span class="badge">Custom reporting</span>
+          <span class="badge">Custom routing</span>
+          <span class="badge">Dedicated support</span>
+        </div>
+        <div class="divider"></div>
+        <button class="btn primary" type="button" data-plan="Enterprise">Request an Enterprise Demo</button>
+      </div>
+    </section>
+
+    <!-- PROOF -->
+    <section class="section" id="proof">
+      <h2>Proof</h2>
+      <p>Simple social proof you can use until you have real case studies.</p>
+
+      <div class="pricing">
+        <div class="card">
+          <div class="panelTitle"><h3>Owner-Operator</h3><span class="tag">Local</span></div>
+          <p class="muted" style="margin:0; line-height:1.7">
+            “PulseTrack cleaned up our lead flow. We respond faster and we’re booking more jobs because nothing falls through the cracks.”
+          </p>
+          <div class="divider"></div>
+          <div class="mini">— Junk Removal Owner</div>
+        </div>
+
+        <div class="card">
+          <div class="panelTitle"><h3>Dispatcher</h3><span class="tag">Ops</span></div>
+          <p class="muted" style="margin:0; line-height:1.7">
+            “All leads in one place. Clear source visibility. It made weekly decisions way easier.”
+          </p>
+          <div class="divider"></div>
+          <div class="mini">— Operations / Dispatch</div>
+        </div>
+
+        <div class="card">
+          <div class="panelTitle"><h3>Small Team</h3><span class="tag">Growth</span></div>
+          <p class="muted" style="margin:0; line-height:1.7">
+            “We finally know what’s driving calls and what’s wasting money. We cut the junk and scaled what works.”
+          </p>
+          <div class="divider"></div>
+          <div class="mini">— Local Service Team</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section" id="cta">
+      <div class="card" style="display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap">
+        <div>
+          <h2 style="margin:0 0 8px">Want more booked jobs this month?</h2>
+          <div class="muted" style="line-height:1.6">
+            We’ll show you the exact system and how it looks on your service area.
+          </div>
+        </div>
+        <div class="row">
+          <button class="btn primary" type="button" data-plan="Growth">Request a Demo</button>
+          <span class="badge">⏱ 20 min • 🎯 Built around your business</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <div class="row" style="justify-content:space-between">
+        <div>
+          <b>PulseTrack</b> — Junk Removal Leads + Tracking<br/>
+          <span class="mini">Lead capture • Tracking • Optimization</span>
+        </div>
+        <div class="tinyLinks">
+          <a href="#" id="termsLink">Terms</a>
+          <a href="#" id="privacyLink">Privacy</a>
+          <a href="#" id="securityLink">Security</a>
+          <a href="#" id="contactLink">Contact</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- DEMO MODAL -->
+  <div class="overlay" id="overlay">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="Request a demo">
+      <div class="modalHeader">
+        <h3 id="demoTitle">Request a Demo</h3>
+        <button class="close" type="button" id="closeModal">×</button>
+      </div>
+
+      <div class="row" style="margin-bottom:10px">
+        <span class="badge">Plan: <b id="demoPlan">Growth</b></span>
+        <span class="badge">Response: <b>Same day</b></span>
+        <span class="badge">Goal: <b>Booked jobs</b></span>
+      </div>
+
+      <!-- Netlify Forms: works when hosted on Netlify; also stores submissions -->
+      <form id="demoForm" name="demo-request" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <!-- Required hidden input for Netlify -->
+        <input type="hidden" name="form-name" value="demo-request" />
+        <!-- Honeypot field (bots) -->
+        <p style="display:none">
+          <label>Don’t fill this out: <input name="bot-field" /></label>
+        </p>
+
+        <div class="twoCol" style="gap:10px; width:100%">
+          <input required name="firstName" placeholder="First name" />
+          <input required name="lastName" placeholder="Last name" />
+        </div>
+
+        <div class="twoCol" style="gap:10px; width:100%; margin-top:10px">
+          <input required type="email" name="email" placeholder="Email" />
+          <input name="company" placeholder="Company (optional)" />
+        </div>
+
+        <div class="twoCol" style="gap:10px; width:100%; margin-top:10px">
+          <input name="phone" placeholder="Phone (optional)" />
+          <select name="serviceArea">
+            <option value="one-city">One city / small area</option>
+            <option value="multi-city">Multiple cities</option>
+            <option value="regional">Regional coverage</option>
+          </select>
+        </div>
+
+        <div class="twoCol" style="gap:10px; width:100%; margin-top:10px">
+          <select name="currentLeadSource">
+            <option value="none">No current system</option>
+            <option value="word-of-mouth">Word of mouth</option>
+            <option value="facebook">Facebook</option>
+            <option value="google">Google</option>
+            <option value="marketplaces">Marketplaces (Thumbtack/HomeStars/etc.)</option>
+            <option value="other">Other</option>
+          </select>
+          <select name="volume">
+            <option value="under-10">Under 10 leads/month</option>
+            <option value="10-30">10–30 leads/month</option>
+            <option value="30-80">30–80 leads/month</option>
+            <option value="80-plus">80+ leads/month</option>
+          </select>
+        </div>
+
+        <textarea name="needs" rows="4" style="width:100%; margin-top:10px"
+          placeholder="What jobs do you want more of? (cleanouts, appliances, debris, estate, etc.)"></textarea>
+
+        <!-- Filled by JS -->
+        <input type="hidden" name="plan" id="planField" value="Growth" />
+        <input type="hidden" name="billing" id="billingField" value="monthly" />
+
+        <div class="row" style="justify-content:space-between; width:100%; margin-top:10px">
+          <span class="mini">By submitting, you agree to the Terms & Privacy.</span>
+          <button class="btn primary" type="submit">Submit Demo Request</button>
+        </div>
+        <div class="mini" id="demoHint" style="width:100%; margin-top:8px"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- LEGAL MODAL -->
+  <div class="overlay" id="legalOverlay">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="Legal">
+      <div class="modalHeader">
+        <h3 id="legalTitle">Terms</h3>
+        <button class="close" type="button" id="closeLegal">×</button>
+      </div>
+      <div id="legalBody" class="muted" style="line-height:1.7; font-size:14px"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ===== Pricing (monthly + annual: "2 months free") =====
+    const PRICES = {
+      monthly: { starter: 499, growth: 999, scale: 1499 },
+      annual:  { starter: 4990, growth: 9990, scale: 14990 } // ~2 months free vs monthly * 12
+    };
+    let billing = "monthly";
+
+    const el = (id) => document.getElementById(id);
+    const toast = (msg) => {
+      const t = el("toast");
+      t.textContent = msg;
+      t.style.display = "block";
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(()=> t.style.display="none", 2600);
+    };
+
+    function renderPrices(){
+      if (billing === "monthly"){
+        el("priceStarter").innerHTML = `$${PRICES.monthly.starter}<span class="mini">/mo</span>`;
+        el("priceGrowth").innerHTML  = `$${PRICES.monthly.growth}<span class="mini">/mo</span>`;
+        el("priceScale").innerHTML   = `$${PRICES.monthly.scale}<span class="mini">/mo</span>`;
+      } else {
+        el("priceStarter").innerHTML = `$${PRICES.annual.starter.toLocaleString()}<span class="mini">/yr</span>`;
+        el("priceGrowth").innerHTML  = `$${PRICES.annual.growth.toLocaleString()}<span class="mini">/yr</span>`;
+        el("priceScale").innerHTML   = `$${PRICES.annual.scale.toLocaleString()}<span class="mini">/yr</span>`;
+      }
+      el("billingField").value = billing;
+    }
+
+    el("monthlyBtn").addEventListener("click", () => {
+      billing = "monthly";
+      el("monthlyBtn").classList.add("active");
+      el("annualBtn").classList.remove("active");
+      renderPrices();
+    });
+    el("annualBtn").addEventListener("click", () => {
+      billing = "annual";
+      el("annualBtn").classList.add("active");
+      el("monthlyBtn").classList.remove("active");
+      renderPrices();
+    });
+
+    // ===== Demo Modal =====
+    const overlay = el("overlay");
+    const legalOverlay = el("legalOverlay");
+
+    function openDemo(plan){
+      el("demoPlan").textContent = plan || "Growth";
+      el("planField").value = plan || "Growth";
+      el("demoTitle").textContent = plan ? `Request a ${plan} Demo` : "Request a Demo";
+      overlay.style.display = "flex";
+      document.body.style.overflow = "hidden";
+      el("demoHint").textContent = "";
+    }
+    function closeDemo(){
+      overlay.style.display = "none";
+      document.body.style.overflow = "";
+      el("demoHint").textContent = "";
+      el("demoForm").reset();
+      // keep hidden defaults after reset
+      el("planField").value = "Growth";
+      el("billingField").value = billing;
+    }
+
+    el("demoBtnTop").addEventListener("click", () => openDemo("Growth"));
+    el("demoBtnHero").addEventListener("click", () => openDemo("Growth"));
+    el("closeModal").addEventListener("click", closeDemo);
+    overlay.addEventListener("click", (e) => { if (e.target === overlay) closeDemo(); });
+
+    document.addEventListener("click", (e) => {
+      const plan = e.target?.getAttribute?.("data-plan");
+      if (plan) openDemo(plan);
+    });
+
+    // ===== Netlify forms: show friendly message after submit =====
+    el("demoForm").addEventListener("submit", () => {
+      // Let Netlify handle the actual submission; we just show feedback.
+      el("demoHint").textContent = "Submitting… If this is hosted on Netlify, your request will be saved and emailed to you.";
+      toast("Demo request submitting…");
+      // Note: On success, Netlify redirects by default only if you set action="".
+      // We'll keep it simple: you can close modal after submit if you want:
+      setTimeout(() => {
+        toast("Submitted (or queued). Check Netlify Forms submissions.");
+      }, 1200);
+    });
+
+    // ===== Legal Modals (placeholders) =====
+    const LEGAL = {
+      terms: `
+        <p><b>Terms of Service (placeholder)</b></p>
+        <p>PulseTrack provides a lead capture and tracking service for businesses. You agree to use the service only for lawful marketing and customer communications.</p>
+        <p><b>No guaranteed outcomes.</b> Results vary by market, season, service quality, and response time.</p>
+        <p><b>Billing.</b> Plans renew unless canceled. Enterprise may use a custom agreement.</p>
+        <p>Replace this placeholder with your finalized legal terms when you are ready.</p>
+      `,
+      privacy: `
+        <p><b>Privacy Policy (placeholder)</b></p>
+        <p>We collect contact information submitted in demo requests (name, email, phone, company) to respond and provide service information. We may store form submissions in Netlify Forms (or your chosen provider).</p>
+        <p>Replace this placeholder with your finalized privacy policy when you are ready.</p>
+      `,
+      security: `
+        <p><b>Security (placeholder)</b></p>
+        <p>We use access controls and standard web security practices where available. Replace this with your security posture details (encryption, retention, incident response) if you scale.</p>
+      `,
+      contact: `
+        <p><b>Contact</b></p>
+        <p>Email: <b>pulsetrack@zohomail.com</b> (temporary)</p>
+        <p>Replace with your real business inbox later.</p>
+      `
+    };
+
+    function openLegal(title, bodyHtml){
+      el("legalTitle").textContent = title;
+      el("legalBody").innerHTML = bodyHtml;
+      legalOverlay.style.display = "flex";
+      document.body.style.overflow = "hidden";
+    }
+    function closeLegal(){
+      legalOverlay.style.display = "none";
+      document.body.style.overflow = "";
+    }
+
+    el("closeLegal").addEventListener("click", closeLegal);
+    legalOverlay.addEventListener("click", (e) => { if (e.target === legalOverlay) closeLegal(); });
+
+    el("termsLink").addEventListener("click", (e) => { e.preventDefault(); openLegal("Terms", LEGAL.terms); });
+    el("privacyLink").addEventListener("click", (e) => { e.preventDefault(); openLegal("Privacy", LEGAL.privacy); });
+    el("securityLink").addEventListener("click", (e) => { e.preventDefault(); openLegal("Security", LEGAL.security); });
+    el("contactLink").addEventListener("click", (e) => { e.preventDefault(); openLegal("Contact", LEGAL.contact); });
+
+    // ===== Share button (Web Share API, else copy URL) =====
+    el("shareBtn").addEventListener("click", async () => {
+      const shareData = {
+        title: "PulseTrack — Junk Removal Leads + Tracking",
+        text: "More booked jobs. Clear tracking. Simple system.",
+        url: (location && location.href) ? location.href : "https://pulsetrack.example/"
+      };
+      try{
+        if (navigator.share){
+          await navigator.share(shareData);
+        } else {
+          await navigator.clipboard.writeText(shareData.url);
+          toast("Link copied to clipboard.");
+        }
+      }catch(err){
+        console.error(err);
+        toast("Couldn’t share. If allowed, copy the URL from the address bar.");
+      }
+    });
+
+    // Init
+    renderPrices();
+  </script>
+</body>
+</html>
